@@ -5,108 +5,69 @@ export function WelcomeScreen({ isActive, onNext }) {
     return (
         <section className={`screen center-content ${isActive ? "active" : ""}`}>
             <div className="fade-sequence">
-                <h1 className="brand-title">Clarity.</h1>
-                <p className="subtitle">Know where your money actually goes.</p>
-                <button className="primary-btn mt-large" onClick={onNext}>Begin</button>
+                <h1 className="brand-title" style={{ fontSize: '2.5rem' }}>Understand where your money actually goes.</h1>
+                <p className="subtitle mt-small">Clarity transforms fragmented financial activity into meaningful behavioral insights.</p>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '3rem' }}>
+                    <button className="primary-btn" onClick={onNext}>Try Demo</button>
+                    <button className="primary-btn" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)' }} onClick={onNext}>Upload Statement</button>
+                    <button style={{ color: 'var(--text-secondary)', marginTop: '1rem' }} onClick={onNext}>Explore Sample Insights</button>
+                </div>
             </div>
         </section>
     );
 }
 
-export function IntroScreen({ isActive, onNext }) {
-    return (
-        <section className={`screen bottom-sheet-layout ${isActive ? "active" : ""}`}>
-            <div className="card bottom-sheet slide-up-sequence">
-                <h2>I am your calm financial companion.</h2>
-                <p>I don't set budgets. I don't judge your spending. I just help you see your financial life clearly, without the overwhelm.</p>
-                <button className="primary-btn full-width mt-medium" onClick={onNext}>Continue</button>
-            </div>
-        </section>
-    );
-}
+export function UploadScreen({ isActive, onNext }) {
+    const [isDragging, setIsDragging] = useState(false);
+    const [uploaded, setUploaded] = useState(false);
 
-export function ValuePropScreen({ isActive, onNext }) {
-    const [merged, setMerged] = useState(false);
+    const handleDrag = (e) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
 
-    const handleNext = () => {
-        setMerged(true);
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+        setUploaded(true);
         setTimeout(() => onNext(), 1500);
     };
 
     return (
         <section className={`screen center-content ${isActive ? "active" : ""}`}>
-            <div className={`morph-container fade-sequence ${merged ? "merged" : ""}`}>
-                <div className="glass-row" id="row-bank">{merged ? "One Clear Picture" : "Bank Accounts"}</div>
-                <div className="glass-row" id="row-upi">UPI Apps</div>
-                <div className="glass-row" id="row-card">Credit Cards</div>
-            </div>
-            <div className="text-content mt-large fade-sequence-delayed">
-                <h2>Sense from the chaos.</h2>
-                <p>Money moves across accounts, apps, and cards. I connect the dots and turn raw numbers into human insights.</p>
-                <button className="primary-btn mt-medium" onClick={handleNext}>Next</button>
-            </div>
-        </section>
-    );
-}
-
-export function GoalsScreen({ isActive, onNext }) {
-    const [selectedGoals, setSelectedGoals] = useState([]);
-
-    const toggleGoal = (goal) => {
-        if (selectedGoals.includes(goal)) {
-            setSelectedGoals(selectedGoals.filter(g => g !== goal));
-        } else {
-            setSelectedGoals([...selectedGoals, goal]);
-        }
-    };
-
-    return (
-        <section className={`screen top-layout ${isActive ? "active" : ""}`}>
-            <div className="slide-up-sequence">
-                <h2>What brought you here?</h2>
-                <div className="goals-list mt-medium">
-                    {["Where does my money go?", "Month-end anxiety", "Finding hidden subscriptions", "Understanding my habits"].map((goal) => (
-                        <button 
-                            key={goal}
-                            className={`goal-toggle ${selectedGoals.includes(goal) ? 'selected' : ''}`}
-                            onClick={() => toggleGoal(goal)}
-                        >
-                            "{goal}"
-                        </button>
-                    ))}
-                </div>
-                <button 
-                    className={`primary-btn full-width mt-large ${selectedGoals.length === 0 ? 'disabled' : ''}`} 
-                    onClick={onNext}
-                >
-                    Continue
-                </button>
-            </div>
-        </section>
-    );
-}
-
-export function ConnectionScreen({ isActive, onNext }) {
-    return (
-        <section className={`screen top-layout ${isActive ? "active" : ""}`}>
-            <div className="slide-up-sequence">
-                <h2>Let's connect your accounts.</h2>
-                <p className="subtitle-left">Select a method to securely import your data.</p>
+            <div className="slide-up-sequence" style={{ width: '100%', maxWidth: '400px' }}>
+                <h2>Connect your data</h2>
+                <p className="subtitle-left" style={{ marginBottom: '1rem' }}>Upload your PDF or CSV bank statements to begin.</p>
                 
-                <div className="connection-options mt-medium">
-                    <button className="connection-btn" onClick={onNext}>
-                        <div className="icon">🔗</div>
-                        <div className="text">Link via Account Aggregator</div>
-                    </button>
-                    <button className="connection-btn secondary" onClick={onNext}>
-                        <div className="icon">📄</div>
-                        <div className="text">Upload PDF Statement</div>
-                    </button>
+                <div 
+                    className={`drag-drop-zone ${isDragging ? 'dragging' : ''} ${uploaded ? 'uploaded' : ''}`}
+                    onDragOver={handleDrag}
+                    onDragLeave={() => setIsDragging(false)}
+                    onDrop={handleDrop}
+                    onClick={() => { setUploaded(true); setTimeout(() => onNext(), 1500); }}
+                    style={{
+                        border: `2px dashed ${isDragging ? 'var(--accent-solid)' : 'rgba(255,255,255,0.2)'}`,
+                        borderRadius: '20px',
+                        padding: '3rem 2rem',
+                        textAlign: 'center',
+                        background: isDragging ? 'rgba(99, 102, 241, 0.05)' : 'rgba(255,255,255,0.02)',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer'
+                    }}
+                >
+                    <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>
+                        {uploaded ? '✅' : '📄'}
+                    </div>
+                    <h3 style={{ marginBottom: '0.5rem', fontWeight: 500 }}>
+                        {uploaded ? 'Statement Uploaded' : 'Drag & Drop statement'}
+                    </h3>
+                    {!uploaded && <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>or click to browse files</p>}
                 </div>
 
-                <div className="privacy-promise mt-large">
-                    <div className="shield-icon">🔒</div>
-                    <p>Your data is encrypted. I cannot move your money. I never share your data.</p>
+                <div className="privacy-promise mt-large" style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', alignItems: 'center' }}>
+                    <div className="shield-icon" style={{ color: 'var(--accent-solid)' }}>🔒</div>
+                    <p style={{ fontSize: '0.85rem' }}>Your financial data is encrypted and never sold.</p>
                 </div>
             </div>
         </section>
@@ -115,9 +76,9 @@ export function ConnectionScreen({ isActive, onNext }) {
 
 export function LoadingScreen({ isActive, onNext, setBackgroundReady }) {
     const phases = [
-        "Categorizing 312 purchases...",
-        "Finding recurring subscriptions...",
-        "Looking for patterns...",
+        "Analyzing spending patterns...",
+        "Detecting recurring subscriptions...",
+        "Understanding your financial rhythms...",
         "Ready."
     ];
     const [phaseIndex, setPhaseIndex] = useState(0);
@@ -158,7 +119,8 @@ export function LoadingScreen({ isActive, onNext, setBackgroundReady }) {
                     style={{ 
                         opacity, 
                         fontSize: isReady ? "3rem" : "1.5rem", 
-                        fontWeight: isReady ? "500" : "300" 
+                        fontWeight: isReady ? "500" : "300",
+                        textAlign: "center"
                     }}
                 >
                     {phases[phaseIndex]}
@@ -169,77 +131,99 @@ export function LoadingScreen({ isActive, onNext, setBackgroundReady }) {
 }
 
 export function InsightScreen({ isActive, onNext }) {
-    return (
-        <section className={`screen center-content ${isActive ? "active" : ""}`}>
-            <div className="insight-card pop-in">
-                <p className="insight-text">"You spent ₹4,200 on food delivery last month. Interestingly, 60% of that happened after 10 PM on weekends."</p>
-                <button className="primary-btn mt-medium" onClick={onNext}>Show me more</button>
-            </div>
-        </section>
-    );
-}
+    if (!isActive) return <section className="screen" style={{ opacity: 0, pointerEvents: 'none' }}></section>;
 
-export function PermissionsScreen({ isActive, onNext }) {
     return (
-        <section className={`screen bg-blur ${isActive ? "active" : ""}`}>
-            <div className="card bottom-sheet pop-up">
-                <h2>Keep your clarity secure and timely.</h2>
+        <section className={`screen active`} style={{ padding: 0, overflow: 'hidden' }}>
+            <div className="scroll-container">
                 
-                <div className="permission-item mt-medium">
-                    <div className="perm-text">
-                        <strong>FaceID / App Lock</strong>
-                        <p>Keep your financial data private.</p>
+                {/* Section 1: AI Transition */}
+                <div className="scroll-section center-content">
+                    <h2 style={{ fontSize: '2.5rem', fontWeight: 300, textAlign: 'center' }}>Your financial patterns are ready.</h2>
+                    <div className="scroll-hint" style={{ textAlign: 'center' }}>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--accent-solid)' }}>Scroll to explore</p>
+                        <div style={{ marginTop: '0.5rem', color: 'var(--accent-solid)' }}>↓</div>
                     </div>
-                    <label className="switch">
-                        <input type="checkbox" />
-                        <span className="slider round"></span>
-                    </label>
                 </div>
 
-                <div className="permission-item mt-small">
-                    <div className="perm-text">
-                        <strong>Smart Notifications</strong>
-                        <p>Only weekly summaries and anomalies. No spam.</p>
+                {/* Section 2: First Insight Reveal */}
+                <div className="scroll-section start-top">
+                    <h2 style={{ marginBottom: '2rem' }}>What I noticed...</h2>
+                    
+                    <div className="insight-feed-card fade-sequence-delayed">
+                        <div className="insight-header">
+                            <span className="insight-title">Time of Day Rhythm</span>
+                            <div className="trend-indicator trend-up">↗</div>
+                        </div>
+                        <p className="insight-desc">Most convenience spending happens after 10PM.</p>
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '1rem', fontStyle: 'italic' }}>
+                            Could meal prepping on weekends buy back your evening time?
+                        </p>
                     </div>
-                    <label className="switch">
-                        <input type="checkbox" defaultChecked />
-                        <span className="slider round"></span>
-                    </label>
+
+                    <div className="insight-feed-card fade-sequence-delayed" style={{ animationDelay: '0.2s' }}>
+                        <div className="insight-header">
+                            <span className="insight-title">Weekend Spikes</span>
+                            <div className="trend-indicator trend-up">↗</div>
+                        </div>
+                        <p className="insight-desc">Weekend food delivery spending increased this month.</p>
+                    </div>
+
+                    <div className="insight-feed-card fade-sequence-delayed" style={{ animationDelay: '0.4s' }}>
+                        <div className="insight-header">
+                            <span className="insight-title">Subscription Load</span>
+                            <div className="trend-indicator trend-stable">→</div>
+                        </div>
+                        <p className="insight-desc">You currently have 7 recurring subscriptions.</p>
+                    </div>
+
+                    <div className="insight-feed-card fade-sequence-delayed" style={{ animationDelay: '0.6s' }}>
+                        <div className="insight-header">
+                            <span className="insight-title">Transport</span>
+                            <div className="trend-indicator trend-stable">→</div>
+                        </div>
+                        <p className="insight-desc">Transport expenses became more stable this month.</p>
+                    </div>
                 </div>
 
-                <button className="primary-btn full-width mt-large" onClick={onNext}>Enter Clarity</button>
-            </div>
-        </section>
-    );
-}
-
-export function DashboardScreen({ isActive }) {
-    return (
-        <section className={`screen top-layout dashboard ${isActive ? "active" : ""}`}>
-            <div className="fade-in-slow">
-                <header className="dash-header">
-                    <p className="date">Thursday, May 10</p>
-                    <h1 className="greeting">Good evening.</h1>
-                    <p className="ai-summary">Your spending is stable this week. You have one subscription renewing tomorrow.</p>
-                </header>
-
-                <div className="feed mt-medium">
-                    <div className="feed-card alert">
-                        <div className="icon">🔄</div>
-                        <div className="details">
-                            <strong>Netflix Premium</strong>
-                            <p>Renews tomorrow • ₹649</p>
+                {/* Section 3: Financial Clarity Snapshot */}
+                <div className="scroll-section start-top">
+                    <h2 style={{ marginBottom: '1rem' }}>Clarity Snapshot</h2>
+                    <p style={{ marginBottom: '1rem' }}>Awareness indicators based on your baseline.</p>
+                    
+                    <div className="health-grid fade-sequence-delayed">
+                        <div className="health-item">
+                            <span className="label">Spending Stability</span>
+                            <span className="value">Stable ↗</span>
+                        </div>
+                        <div className="health-item">
+                            <span className="label">Subscription Load</span>
+                            <span className="value">14% of outflow</span>
+                        </div>
+                        <div className="health-item">
+                            <span className="label">Savings Consistency</span>
+                            <span className="value">Regular →</span>
+                        </div>
+                        <div className="health-item">
+                            <span className="label">Financial Volatility</span>
+                            <span className="value">Low ↘</span>
+                        </div>
+                        <div className="health-item" style={{ gridColumn: 'span 2' }}>
+                            <span className="label">Impulse Spending Trend</span>
+                            <span className="value" style={{ color: 'var(--accent-solid)' }}>Decreasing</span>
                         </div>
                     </div>
-                    <div className="feed-card">
-                        <div className="icon">🍔</div>
-                        <div className="details">
-                            <strong>Swiggy</strong>
-                            <p>Food & Dining • Today, 8:45 PM</p>
-                        </div>
-                        <div className="amount">-₹340</div>
-                    </div>
                 </div>
+
+                {/* Section 4: CTAs */}
+                <div className="scroll-section center-content">
+                    <h2 style={{ marginBottom: '2rem' }}>Ready to explore?</h2>
+                    <button className="primary-btn full-width" onClick={onNext}>Enter Clarity</button>
+                    <button className="connection-btn secondary mt-small" onClick={onNext}>
+                        <div className="text" style={{ textAlign: 'center', width: '100%' }}>Explore Your Financial Patterns</div>
+                    </button>
+                </div>
+
             </div>
         </section>
     );
