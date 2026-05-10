@@ -1,97 +1,220 @@
 "use client";
 import { useState } from "react";
 
+const insights = [
+    {
+        id: 1,
+        label: "Primary Observation",
+        title: "Subscription load increased slightly this month.",
+        desc: "You added two new streaming services, bringing your total monthly commitment to",
+        amount: "₹4,250",
+        cta: "Review Commitments",
+        ctaNav: "radar",
+    },
+    {
+        id: 2,
+        label: "Behavioral Shift",
+        title: "Convenience spending peaks after 10PM.",
+        desc: "Most discretionary spending happens in the last two hours of the day — typically after longer work sessions.",
+        amount: null,
+        cta: "See Spending Pulse",
+        ctaNav: "pulse",
+    },
+];
+
 export default function HomeDashboard({ onNavigate }) {
     const [isQuietMode, setIsQuietMode] = useState(false);
+    const [focusedInsight, setFocusedInsight] = useState(0);
+
+    const insight = insights[focusedInsight];
 
     return (
-        <div className={`dashboard-container fade-in-slow ${isQuietMode ? "quiet-mode" : ""}`} style={{ paddingBottom: '6rem' }}>
-            
-            {/* 1. Ambient AI Welcome & Quiet Mode Toggle */}
-            <header style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
-                    <div className="ambient-orb"></div>
-                    <h1 style={{ fontSize: '1.4rem', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '0.5rem', maxWidth: '280px', lineHeight: 1.4 }}>
-                        Your financial rhythm looks calmer this week.
-                    </h1>
+        <div
+            className={`dashboard-container fade-in-slow ${isQuietMode ? "quiet-mode" : ""}`}
+            style={{ paddingBottom: "7rem" }}
+        >
+
+            {/* ── 1. Ambient AI Welcome ── */}
+            <header style={{ marginBottom: "2.5rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+
+                    {/* Orb + greeting */}
+                    <div style={{ flex: 1 }}>
+                        <div className="ambient-orb" />
+                        <p style={{
+                            fontSize: "0.78rem", fontWeight: 600,
+                            letterSpacing: "0.08em", textTransform: "uppercase",
+                            color: "var(--text-secondary)", marginBottom: "0.4rem"
+                        }}>
+                            Your Clarity
+                        </p>
+                        <h1 style={{
+                            fontSize: "1.45rem", fontWeight: 600,
+                            lineHeight: 1.35, letterSpacing: "-0.02em",
+                            color: "var(--text-primary)", maxWidth: "260px"
+                        }}>
+                            Your financial rhythm looks calmer this week.
+                        </h1>
+                    </div>
+
+                    {/* Quiet Mode */}
+                    <button
+                        className={`quiet-mode-toggle ${isQuietMode ? "active" : ""}`}
+                        onClick={() => setIsQuietMode(!isQuietMode)}
+                        style={{ marginTop: "0.25rem", flexShrink: 0 }}
+                    >
+                        <span style={{ fontSize: "1rem" }}>{isQuietMode ? "🌙" : "✦"}</span>
+                        {isQuietMode ? "Quiet" : "Reflect"}
+                    </button>
                 </div>
-                
-                <button 
-                    className={`quiet-mode-toggle ${isQuietMode ? 'active' : ''}`}
-                    onClick={() => setIsQuietMode(!isQuietMode)}
-                >
-                    <span style={{ fontSize: '1.2rem' }}>{isQuietMode ? '🌙' : '🌤️'}</span>
-                    Quiet Mode
-                </button>
             </header>
 
-            {/* 2. Cinematic Single Focus Insight */}
-            <section>
+            {/* ── 2. Cinematic Single Focus Insight ── */}
+            <section style={{ marginBottom: "2rem" }}>
                 <div className="cinematic-insight-card">
-                    <p style={{ color: 'var(--accent-solid)', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-                        Primary Observation
+                    <p style={{
+                        color: "var(--accent-solid)", fontSize: "0.78rem", fontWeight: 600,
+                        letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "1.2rem"
+                    }}>
+                        {insight.label}
                     </p>
-                    <h2 className="cinematic-title">Subscription load increased slightly this month.</h2>
+
+                    <h2 className="cinematic-title">{insight.title}</h2>
+
                     <p className="cinematic-desc">
-                        You added two new streaming services, bringing your total monthly commitment to <span className="obscurable-number" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>₹4,250</span>.
+                        {insight.desc}
+                        {insight.amount && (
+                            <>
+                                {" "}
+                                <span
+                                    className="obscurable-number"
+                                    style={{ fontWeight: 600, color: "var(--text-primary)" }}
+                                >
+                                    {insight.amount}
+                                </span>
+                                .
+                            </>
+                        )}
                     </p>
-                    
-                    <button 
-                        onClick={() => onNavigate("radar")}
-                        style={{ marginTop: '2rem', background: 'transparent', border: '1px solid rgba(99, 102, 241, 0.3)', color: 'var(--accent-solid)', padding: '0.8rem 1.5rem', borderRadius: '100px', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-                    >
-                        Review Commitments <span style={{ fontSize: '1.2rem' }}>→</span>
-                    </button>
+
+                    <div style={{ marginTop: "2rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+                        <button
+                            onClick={() => onNavigate(insight.ctaNav)}
+                            style={{
+                                background: "transparent",
+                                border: "1px solid rgba(99,102,241,0.25)",
+                                color: "var(--accent-solid)",
+                                padding: "0.7rem 1.4rem",
+                                borderRadius: "100px",
+                                fontWeight: 500,
+                                fontSize: "0.9rem",
+                                display: "flex", alignItems: "center", gap: "0.4rem",
+                                transition: "all 0.2s ease"
+                            }}
+                        >
+                            {insight.cta} →
+                        </button>
+
+                        {/* Insight switcher dots */}
+                        <div style={{ display: "flex", gap: "0.5rem" }}>
+                            {insights.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setFocusedInsight(i)}
+                                    style={{
+                                        width: i === focusedInsight ? "24px" : "8px",
+                                        height: "8px",
+                                        borderRadius: "100px",
+                                        background: i === focusedInsight ? "var(--accent-solid)" : "rgba(99,102,241,0.2)",
+                                        transition: "all 0.3s ease"
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            {/* 3. Organic Clarity Snapshot */}
-            <section style={{ marginBottom: '3rem' }}>
-                <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Clarity Snapshot</h3>
+            {/* ── 3. Organic Clarity Snapshot ── */}
+            <section style={{ marginBottom: "2.5rem" }}>
+                <p style={{
+                    fontSize: "0.78rem", fontWeight: 600, letterSpacing: "0.08em",
+                    textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: "1rem"
+                }}>
+                    Clarity Snapshot
+                </p>
                 <div className="ambient-tag-container">
                     <div className="ambient-tag">
-                        <div className="dot" style={{ background: '#10B981' }}></div>
-                        Spending Stability
+                        <div className="dot" style={{ background: "#10B981" }} />
+                        Spending Stable
                     </div>
                     <div className="ambient-tag">
-                        <div className="dot" style={{ background: '#3B82F6' }}></div>
-                        Savings Consistency
+                        <div className="dot" style={{ background: "#3B82F6" }} />
+                        Savings Consistent
                     </div>
                     <div className="ambient-tag">
-                        <div className="dot" style={{ background: '#A855F7' }}></div>
+                        <div className="dot" style={{ background: "#A855F7" }} />
                         Low Volatility
                     </div>
                     <div className="ambient-tag">
-                        <div className="dot" style={{ background: '#F59E0B' }}></div>
-                        Rising Subscriptions
+                        <div className="dot" style={{ background: "#F59E0B" }} />
+                        Subscriptions Rising
+                    </div>
+                    <div className="ambient-tag">
+                        <div className="dot" style={{ background: "#6366F1" }} />
+                        Impulse Decreasing
                     </div>
                 </div>
             </section>
 
-            {/* 4. AI Narrative Feed */}
-            <section style={{ marginBottom: '3rem' }}>
-                <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Recent Shifts</h3>
-                
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <div style={{ padding: '1.5rem', background: 'var(--card-bg)', borderRadius: '20px', border: '1px solid var(--border-color)' }}>
-                        <p style={{ fontSize: '1.05rem', lineHeight: 1.6, color: 'var(--text-primary)' }}>
-                            Most discretionary spending happened after stressful workdays. Convenience ordering peaked at <span className="obscurable-number" style={{ fontWeight: 500 }}>₹1,200</span> last Thursday.
-                        </p>
-                    </div>
-                    
-                    <div style={{ padding: '1.5rem', background: 'var(--card-bg)', borderRadius: '20px', border: '1px solid var(--border-color)' }}>
-                        <p style={{ fontSize: '1.05rem', lineHeight: 1.6, color: 'var(--text-primary)' }}>
-                            Transport expenses stabilized compared to previous weeks, holding steady at <span className="obscurable-number" style={{ fontWeight: 500 }}>₹850</span> across the last 14 days.
-                        </p>
-                    </div>
+            {/* ── 4. AI Narrative Feed ── */}
+            <section style={{ marginBottom: "2.5rem" }}>
+                <p style={{
+                    fontSize: "0.78rem", fontWeight: 600, letterSpacing: "0.08em",
+                    textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: "1rem"
+                }}>
+                    Recent Shifts
+                </p>
+
+                <div className="narrative-card">
+                    <p>
+                        Most discretionary spending happened after stressful workdays.
+                        Convenience ordering peaked at{" "}
+                        <span className="obscurable-number" style={{ fontWeight: 600 }}>₹1,200</span>
+                        {" "}last Thursday.
+                    </p>
+                </div>
+
+                <div className="narrative-card">
+                    <p>
+                        Transport expenses stabilized compared to previous weeks,
+                        holding steady at{" "}
+                        <span className="obscurable-number" style={{ fontWeight: 600 }}>₹850</span>
+                        {" "}across the last 14 days.
+                    </p>
+                </div>
+
+                <div className="narrative-card">
+                    <p>
+                        Weekend food delivery frequency became more consistent — orders were
+                        placed every Saturday and Sunday for the past three weeks.
+                    </p>
                 </div>
             </section>
 
-            {/* 5. Editorial Reflection Card */}
-            <section style={{ marginBottom: '2rem' }}>
-                <div className="reflection-desk" style={{ borderTop: '1px solid rgba(99, 102, 241, 0.2)', paddingTop: '2rem', paddingBottom: '2rem' }}>
-                    <p className="reflection-text" style={{ fontSize: '1.3rem', color: 'var(--text-primary)', opacity: isQuietMode ? 1 : 0.8, transition: 'opacity 0.3s ease' }}>
-                        "This month showed stronger financial consistency, though convenience-based micro-spending gradually increased during high-workload periods. Your baseline is stable."
+            {/* ── 5. Editorial AI Reflection ── */}
+            <section>
+                <p style={{
+                    fontSize: "0.78rem", fontWeight: 600, letterSpacing: "0.08em",
+                    textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: "1rem"
+                }}>
+                    AI Reflection
+                </p>
+                <div className="editorial-reflection">
+                    <p>
+                        This month showed stronger financial consistency, though
+                        convenience-based micro-spending gradually increased during
+                        high-workload periods. Your baseline remains stable.
                     </p>
                 </div>
             </section>
