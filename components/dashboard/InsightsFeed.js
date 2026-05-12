@@ -32,6 +32,20 @@ export default function InsightsFeed() {
                 </div>
             </div>
 
+            {/* Leak Detector */}
+            <section style={{ marginBottom: '2rem' }}>
+                <div className="insight-feed-card shadow-glow card-rounded" style={{ background: 'rgba(245, 158, 11, 0.05)', borderColor: 'rgba(245, 158, 11, 0.2)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div>
+                            <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 600 }}>Leak Detector</span>
+                            <h3 style={{ fontSize: '1.1rem', marginTop: '0.2rem', color: 'var(--text-primary)' }}>Duplicate Subscription?</h3>
+                        </div>
+                        <div className="trend-indicator" style={{ color: '#F59E0B'}}>?</div>
+                    </div>
+                    <p style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>You paid for two different cloud storage services this month (CloudDrive and SyncPro). Is this intentional, or an opportunity to save <span className="obscurable-number">~₹450</span>?</p>
+                </div>
+            </section>
+
             {/* Pattern Detection / Health Signal Block */}
             <section style={{ marginBottom: '2rem' }}>
                 <div className="insight-feed-card" style={{ background: 'rgba(99, 102, 241, 0.05)', borderColor: 'rgba(99, 102, 241, 0.2)' }}>
@@ -50,7 +64,7 @@ export default function InsightsFeed() {
             <section style={{ marginBottom: '2rem' }}>
                 <InsightCard 
                     title="Food delivery spending increased 24%"
-                    desc="Your total for food delivery this month is ₹6,800, up from ₹5,200 last month."
+                    desc={<>Your total for food delivery this month is <span className="obscurable-number">~₹6.8k</span>, up from <span className="obscurable-number">~₹5.2k</span> last month.</>}
                     trend="↗"
                     trendClass="trend-up"
                     aiReasoning="This correlates with the two extra late-night shifts you worked this week. Convenience spending typically rises when your schedule becomes irregular."
@@ -68,7 +82,7 @@ export default function InsightsFeed() {
 
                 <InsightCard 
                     title="Weekend spending is becoming consistent"
-                    desc="Your weekend outflow has stabilized at around ₹3,000 per weekend."
+                    desc={<>Your weekend outflow has stabilized at around <span className="obscurable-number">~₹3k</span> per weekend.</>}
                     trend="↘"
                     trendClass="trend-down"
                     aiReasoning="You've stopped the massive impulse spikes you had two months ago. You are establishing a healthy, predictable weekend rhythm."

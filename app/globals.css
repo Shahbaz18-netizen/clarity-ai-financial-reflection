@@ -1910,3 +1910,17 @@ body.light-theme::before {
 .nav-icon {
     font-size: 1.4rem;
 }
+
+/* Lovable Analysis Additions */
+.shadow-glow {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 12px 28px rgba(0,0,0,0.05), 0 0 40px rgba(99, 102, 241, 0.15);
+    transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+.shadow-glow:hover {
+    box-shadow: 0 8px 12px rgba(0,0,0,0.03), 0 20px 40px rgba(0,0,0,0.07), 0 0 60px rgba(99, 102, 241, 0.25);
+    transform: translateY(-2px);
+}
+
+.card-rounded {
+    border-radius: 24px;
+}

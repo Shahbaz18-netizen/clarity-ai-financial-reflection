@@ -9,6 +9,7 @@ import ProfileSettings from "./ProfileSettings";
 
 export default function DashboardLayout({ isActive }) {
     const [activeTab, setActiveTab] = useState("home");
+    const [isQuietMode, setIsQuietMode] = useState(false);
 
     useEffect(() => {
         if (isActive) {
@@ -22,11 +23,19 @@ export default function DashboardLayout({ isActive }) {
         }
     }, [isActive]);
 
+    useEffect(() => {
+        if (isQuietMode) {
+            document.body.classList.add("quiet-mode");
+        } else {
+            document.body.classList.remove("quiet-mode");
+        }
+    }, [isQuietMode]);
+
     if (!isActive) return null;
 
     return (
         <>
-            {activeTab === "home" && <HomeDashboard onNavigate={setActiveTab} />}
+            {activeTab === "home" && <HomeDashboard onNavigate={setActiveTab} isQuietMode={isQuietMode} setIsQuietMode={setIsQuietMode} />}
             {activeTab === "insights" && <InsightsFeed />}
             {activeTab === "pulse" && <SpendingPulse />}
             {activeTab === "radar" && <SubscriptionRadar />}

@@ -14,6 +14,17 @@ export default function SpendingPulse() {
                 <div className="avatar" style={{ background: 'linear-gradient(135deg, #A855F7 0%, #3B82F6 100%)' }}>🌊</div>
             </header>
 
+            {/* 1.5 Daily Pacing */}
+            <section style={{ marginBottom: '2.5rem' }}>
+                <div className="card-rounded shadow-glow" style={{ padding: '2rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                    <p style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--accent-solid)', fontWeight: 600, marginBottom: '0.5rem' }}>Current Pace</p>
+                    <h2 style={{ fontSize: '1.8rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.2rem', lineHeight: 1.2 }}>You're spending slightly less than usual.</h2>
+                    <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)' }}>
+                        Pacing at <span className="obscurable-number" style={{ color: 'var(--text-primary)', fontWeight: 500 }}>~₹850</span> / day
+                    </p>
+                </div>
+            </section>
+
             {/* 2. Ambient Rhythm Visualization */}
             <section style={{ marginBottom: '2.5rem' }}>
                 <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>Intensity Heatmap</h2>

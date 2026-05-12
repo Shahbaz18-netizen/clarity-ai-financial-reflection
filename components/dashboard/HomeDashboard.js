@@ -7,7 +7,7 @@ const insights = [
         label: "Primary Observation",
         title: "Subscription load increased slightly this month.",
         desc: "You added two new streaming services, bringing your total monthly commitment to",
-        amount: "₹4,250",
+        amount: "~₹4.2k",
         cta: "Review Commitments",
         ctaNav: "radar",
     },
@@ -22,15 +22,14 @@ const insights = [
     },
 ];
 
-export default function HomeDashboard({ onNavigate }) {
-    const [isQuietMode, setIsQuietMode] = useState(false);
+export default function HomeDashboard({ onNavigate, isQuietMode, setIsQuietMode }) {
     const [focusedInsight, setFocusedInsight] = useState(0);
 
     const insight = insights[focusedInsight];
 
     return (
         <div
-            className={`dashboard-container fade-in-slow ${isQuietMode ? "quiet-mode" : ""}`}
+            className={`dashboard-container fade-in-slow`}
             style={{ paddingBottom: "7rem" }}
         >
 
@@ -69,9 +68,46 @@ export default function HomeDashboard({ onNavigate }) {
                 </div>
             </header>
 
+            {/* ── 1.5. Financial Health Score ── */}
+            <section style={{ marginBottom: "2.5rem" }}>
+                <div className="health-score-card card-rounded shadow-glow" style={{
+                    padding: "2rem",
+                    background: "rgba(255,255,255,0.02)",
+                    border: "1px solid rgba(255,255,255,0.05)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1.5rem",
+                    backdropFilter: "blur(10px)"
+                }}>
+                    <div style={{
+                        width: "80px", height: "80px",
+                        borderRadius: "50%",
+                        background: "conic-gradient(var(--accent-solid) 85%, rgba(255,255,255,0.1) 0)",
+                        display: "flex", justifyContent: "center", alignItems: "center",
+                        position: "relative",
+                        flexShrink: 0
+                    }}>
+                        <div style={{
+                            width: "70px", height: "70px",
+                            background: "var(--bg-color)",
+                            borderRadius: "50%",
+                            display: "flex", justifyContent: "center", alignItems: "center",
+                            fontSize: "1.5rem", fontWeight: 700,
+                            transition: "background-color 1.2s ease" /* support light mode transition */
+                        }}>
+                            85
+                        </div>
+                    </div>
+                    <div>
+                        <h2 style={{ fontSize: "1.2rem", marginBottom: "0.2rem", fontWeight: 600 }}>Financial Health: Stable</h2>
+                        <p style={{ fontSize: "0.9rem", margin: 0 }}>Your core financial rhythm is healthy and balanced this week.</p>
+                    </div>
+                </div>
+            </section>
+
             {/* ── 2. Cinematic Single Focus Insight ── */}
             <section style={{ marginBottom: "2rem" }}>
-                <div className="cinematic-insight-card">
+                <div className="cinematic-insight-card shadow-glow card-rounded">
                     <p style={{
                         color: "var(--accent-solid)", fontSize: "0.78rem", fontWeight: 600,
                         letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "1.2rem"
@@ -180,7 +216,7 @@ export default function HomeDashboard({ onNavigate }) {
                     <p>
                         Most discretionary spending happened after stressful workdays.
                         Convenience ordering peaked at{" "}
-                        <span className="obscurable-number" style={{ fontWeight: 600 }}>₹1,200</span>
+                        <span className="obscurable-number" style={{ fontWeight: 600 }}>~₹1.2k</span>
                         {" "}last Thursday.
                     </p>
                 </div>
@@ -189,7 +225,7 @@ export default function HomeDashboard({ onNavigate }) {
                     <p>
                         Transport expenses stabilized compared to previous weeks,
                         holding steady at{" "}
-                        <span className="obscurable-number" style={{ fontWeight: 600 }}>₹850</span>
+                        <span className="obscurable-number" style={{ fontWeight: 600 }}>~₹850</span>
                         {" "}across the last 14 days.
                     </p>
                 </div>
